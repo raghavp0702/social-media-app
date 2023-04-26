@@ -13,21 +13,25 @@ router.get('/', function (req, res) {
 
 router.post('/',async(req,res)=>{
     const {email,password} = req.body;
+
+    if(!email)
+    {
+        return res.status(401).json({ message: "Email is required" });
+    }
+
     const user = await User.findOne({email});
 
-    if(!user)
-    {
-        return res.json({message:"User does not exist"});
+    if (!user) {
+      return res.status(401).json({ message: "User does not exist" });
     }
 
-
-    if(password !== user.password)
-    {
-        return res.json({message:"Wrong Password entered"});
-
+    if (password !== user.password) {
+      return res.status(401).json({ message: "Wrong Password entered" });
     }
-    console.log(user._id);
-    const token = jwt.sign({userID : user._id}, 'secret',{expiresIn:'1h'});
+    // console.log(user._id);
+    const token = jwt.sign({ userID: user._id }, "secret", {
+      expiresIn: "14d",
+    });
     // const token = jwt.sign( {userID: user._id}, process.env.SECRET,{expiresIn:'4h'},function(err, token) {
     //     console.log(token);
     //   });
