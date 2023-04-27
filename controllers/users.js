@@ -110,7 +110,8 @@ router.get("/user", getToken, async (req, res) => {
   try {
     const { userID } = req;
 
-    const user = await User.findById(userID).populate("followers", "following");
+    const userfollower = await User.findById(userID).populate("followers");
+    const userfollwoing = await User.findById(userID).populate( "following");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -119,9 +120,10 @@ router.get("/user", getToken, async (req, res) => {
 
     res.json({
       name: user.name,
-      followers: user.followers.length,
-      following: user.following.length,
+      followers: userfollower.followers.length,
+      following: userfollowing.following.length,
     });
+
   } catch (err) {
     res.status(401).json({ message: "Couldnt get the user profile" });
   }
@@ -159,7 +161,7 @@ router.delete("/posts/:id", getToken, async (req, res) => {
     const checkpost = await Post.findOne({ _id: id, author: userID });
 
     if (!checkpost) {
-      return res.status(404).json({ message: "This post does not exist" });
+      return res.status(200).json({ message: "This post does not exist" });
     }
 
     const post = await Post.findByIdAndDelete({ _id: id });

@@ -83,7 +83,7 @@ describe("Tests API", () => {
 
     // console.log(res.body);
     res.should.have.status(200);
-    res.should.be.a("object");
+    res.body.should.be.a("object");
     res.body.should.have.property("postID");
     res.body.should.have.property("title");
     res.body.should.have.property("description");
@@ -170,7 +170,7 @@ describe("Tests API", () => {
     .set({Authorization:`${token}`})
  
         res.should.have.status(200);
-        res.should.be.a("object");
+        res.body.should.be.a("object");
         res.body.should.have.property("commentId");
 
   })
@@ -184,7 +184,7 @@ describe("Tests API", () => {
     .set("Accept", "application/json")
     .set({Authorization:`${token}`})
     res.should.have.status(200);
-        res.should.be.a("object");
+        res.body.should.be.a("object");
 
         res.body.should.have.property("title");
         res.body.should.have.property("description");
@@ -205,7 +205,7 @@ describe("Tests API", () => {
     .set({Authorization:`${token}`})
 
         res.should.have.status(200);
-        res.should.be.a("array");
+        res.body.should.be.an("array");
 
         res.body.should.have.property("id");
         res.body.should.have.property("title");
