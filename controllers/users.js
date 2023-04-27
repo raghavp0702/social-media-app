@@ -107,26 +107,26 @@ router.post("/unfollow/:id", getToken, async (req, res) => {
 
 //get user profile
 router.get("/user", getToken, async (req, res) => {
-  try {
+  // try {
     const { userID } = req;
 
     const userfollower = await User.findById(userID).populate("followers");
-    const userfollwoing = await User.findById(userID).populate( "following");
+    const userfollowing = await User.findById(userID).populate( "following");
 
-    if (!user) {
+    if (!userfollower) {
       return res.status(404).json({ message: "User not found" });
     }
     // console.log("done user profile");
 
     res.json({
-      name: user.name,
+      name: userfollower.name,
       followers: userfollower.followers.length,
       following: userfollowing.following.length,
     });
 
-  } catch (err) {
-    res.status(401).json({ message: "Couldnt get the user profile" });
-  }
+  // } catch (err) {
+  //   res.status(401).json({ message: "Couldnt get the user profile" });
+  // }
 });
 
 router.post("/posts", getToken, async (req, res) => {
@@ -142,7 +142,7 @@ router.post("/posts", getToken, async (req, res) => {
     const newpost = new Post({ title, description, author: userID });
     await newpost.save();
 
-    res.json({
+    res.status(200).json({
       postID: newpost._id,
       title: newpost.title,
       description: newpost.description,
@@ -166,7 +166,7 @@ router.delete("/posts/:id", getToken, async (req, res) => {
 
     const post = await Post.findByIdAndDelete({ _id: id });
 
-    res.json({ message: "Post deleted succesfullly" });
+    res.status(200).json({ message: "Post deleted succesfullly" });
   } catch (err) {
     res.status(401).json({ message: "Couldnt delete the post" });
   }

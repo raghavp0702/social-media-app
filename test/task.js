@@ -83,6 +83,7 @@ describe("Tests API", () => {
 
     // console.log(res.body);
     res.should.have.status(200);
+    postID = res.body.postID;
     res.body.should.be.a("object");
     res.body.should.have.property("postID");
     res.body.should.have.property("title");
@@ -91,22 +92,7 @@ describe("Tests API", () => {
   });
 
   
-  it("should successfully delete a new post", async function () {
-    let res = await chai
-      .request("https://social-media-api-5f39.onrender.com")
-      .delete("/api/posts")
-      .set("Content-Type", "application/json")
-      .set("Accept", "application/json")
-      .set({Authorization: `${token}` });
-
-    // console.log(res.body);
-    res.should.have.status(200);
-    // res.should.be.a("object");
-    // res.body.should.have.property("postID");
-    // res.body.should.have.property("title");
-    // res.body.should.have.property("description");
-    // res.body.should.have.property("created");
-  });
+  
 
   it("should not create a new post with a title field missing",async function () {
     let res = await chai
@@ -133,18 +119,7 @@ describe("Tests API", () => {
 
   })
 
-  it("should successfully unlike a post",async function () {
-    let res = await chai
-      .request("https://social-media-api-5f39.onrender.com")
-    .post("/api/unlike/" + postID)
-    // .send(defaultPost)
-    .set({Authorization:`${token}`})
-    .set("Content-Type", "application/json")
-      .set("Accept", "application/json")
-
-        res.should.have.status(200);
-
-  })
+  
 
   it("should successfully follow a user",async function () {
     let res = await chai
@@ -194,6 +169,31 @@ describe("Tests API", () => {
         res.body.should.have.property("numberOfComments");
 
   })
+
+  it("should successfully unlike a post",async function () {
+    let res = await chai
+      .request("https://social-media-api-5f39.onrender.com")
+    .post("/api/unlike/" + postID)
+    // .send(defaultPost)
+    .set({Authorization:`${token}`})
+    .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+
+        res.should.have.status(200);
+
+  })
+
+  it("should successfully delete a new post", async function () {
+    let res = await chai
+      .request("https://social-media-api-5f39.onrender.com")
+      .delete("/api/posts" + postID)
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .set({Authorization: `${token}` });
+
+    // console.log(res.body);
+    res.should.have.status(200);
+  });
 
   it("should successfully getting all posts created by an authenticated user",async function () {
     let res = await chai
