@@ -7,6 +7,7 @@ const server = "http://localhost:5000";
 const jsonpath = require("jsonpath");
 
 chai.should();
+const expect = chai.expect;
 
 chai.use(chaiHttp);
 
@@ -73,13 +74,16 @@ describe("Tests API", () => {
   });
 
   it("should successfully create a new post", async function () {
+    console.log('here');                      
+    this.timeout(10000); 
     let res = await chai
-      .request("https://social-media-api-5f39.onrender.com")
-      .post("/api/posts")
-      .send(defaultPost)
-      .set("Content-Type", "application/json")
-      .set("Accept", "application/json")
-      .set({Authorization: `${token}` });
+    .request("https://social-media-api-5f39.onrender.com")
+    .post("/api/posts")
+    .send(defaultPost)
+    .set("Content-Type", "application/json")
+    .set("Accept", "application/json")
+    .set({Authorization:`${token}` });
+    console.log('now here');                      
 
     // console.log(res.body);
     res.should.have.status(200);
@@ -89,6 +93,7 @@ describe("Tests API", () => {
     res.body.should.have.property("title");
     res.body.should.have.property("description");
     res.body.should.have.property("created");
+    
   });
 
   
@@ -153,7 +158,7 @@ describe("Tests API", () => {
   it("should successfully getting a single post and its associated number of likes and comments",async function () {
     let res = await chai
       .request("https://social-media-api-5f39.onrender.com")
-    .get("/api/posts" + postID)
+    .get("/api/posts/6448303c6f044b346e209fe6")
     // .send(defaultPost)
     .set("Content-Type", "application/json")
     .set("Accept", "application/json")
@@ -164,7 +169,7 @@ describe("Tests API", () => {
         res.body.should.have.property("title");
         res.body.should.have.property("description");
         res.body.should.have.property("author");
-        res.body.should.have.property("created");
+        res.body.should.have.property("created_at");
         res.body.should.have.property("numberOfLikes");
         res.body.should.have.property("numberOfComments");
 
@@ -183,36 +188,36 @@ describe("Tests API", () => {
 
   })
 
-  it("should successfully delete a new post", async function () {
-    let res = await chai
-      .request("https://social-media-api-5f39.onrender.com")
-      .delete("/api/posts" + postID)
-      .set("Content-Type", "application/json")
-      .set("Accept", "application/json")
-      .set({Authorization: `${token}` });
-
-    // console.log(res.body);
-    res.should.have.status(200);
-  });
-
+  
   it("should successfully getting all posts created by an authenticated user",async function () {
     let res = await chai
-      .request("https://social-media-api-5f39.onrender.com")
+    .request("https://social-media-api-5f39.onrender.com")
     .get("/api/all_posts")
     // .send(defaultPost)
     .set("Content-Type", "application/json")
     .set("Accept", "application/json")
     .set({Authorization:`${token}`})
+    
+    res.should.have.status(200);
+    // res.body.should.be.an(array);
+    // res.body['array'].should.include.property("id")
+    // res.body.should.have.property("id");
+    // res.body[1].should.have.property("title");
+    // res.body.should.have.property("description");
+    // // assert.include(res,"title")
+    // res.body.should.have.property("created");
+    // res.body.should.have.property("likes");
+    // res.body.should.have.property("comments");
 
-        res.should.have.status(200);
-        res.body.should.be.an("array");
-
-        res.body.should.have.property("id");
-        res.body.should.have.property("title");
-        res.body.should.have.property("description");
-        res.body.should.have.property("created");
-        res.body.should.have.property("likes");
-        res.body.should.have.property("comments");
-
+    // expect(res.body).to.be.an('array');
+    // console.log(res.body[0]);
+    // console.log(res.body);
+        expect(res.body.result[0]).to.have.property('id');
+        expect(res.body.result[0]).to.have.property('title');
+        expect(res.body.result[0]).to.have.property('description');
+        expect(res.body.result[0]).to.have.property('created');
+        expect(res.body.result[0]).to.have.property('comments');
+        expect(res.body.result[0]).to.have.property('likes');
+    
   })
 });

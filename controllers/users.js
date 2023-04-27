@@ -158,7 +158,7 @@ router.delete("/posts/:id", getToken, async (req, res) => {
     const { id } = req.params;
     const { userID } = req;
 
-    const checkpost = await Post.findOne({ _id: id, author: userID });
+    const checkpost = await Post.findOne({ _id: id });
 
     if (!checkpost) {
       return res.status(200).json({ message: "This post does not exist" });
