@@ -123,12 +123,12 @@ router.get("/user", getToken, async (req, res) => {
       following: user.following.length,
     });
   } catch (err) {
-    res.status(401).json({ message: "Couldnt perform the unfollow" });
+    res.status(401).json({ message: "Couldnt get the user profile" });
   }
 });
 
 router.post("/posts", getToken, async (req, res) => {
-  try {
+  // try {
     const { title, description } = req.body;
     if(!title || !description)
     {
@@ -141,14 +141,14 @@ router.post("/posts", getToken, async (req, res) => {
     await newpost.save();
 
     res.json({
-      postId: newpost._id,
+      postID: newpost._id,
       title: newpost.title,
       description: newpost.description,
       created: newpost.created,
     });
-  } catch (err) {
-    res.status(401).json({ message: "Couldnt perform the unfollow" });
-  }
+  // } catch (err) {
+  //   res.status(401).json({ message: "Couldnt create the post" });
+  // }
 });
 
 router.delete("/posts/:id", getToken, async (req, res) => {
@@ -166,7 +166,7 @@ router.delete("/posts/:id", getToken, async (req, res) => {
 
     res.json({ message: "Post deleted succesfullly" });
   } catch (err) {
-    res.status(401).json({ message: "Couldnt perform the unfollow" });
+    res.status(401).json({ message: "Couldnt delete the post" });
   }
 });
 
@@ -186,9 +186,9 @@ router.post("/like/:id", getToken, async (req, res) => {
 
     post.likedBy.push(userID);
     await post.save();
-    res.json({ message: "post liked sucessfully" });
+    res.status(200).json({ message: "post liked sucessfully" });
   } catch (err) {
-    res.json({ message: "error occured" });
+    res.status(401).json({ message: "error occured" });
   }
 });
 
@@ -208,9 +208,9 @@ router.post("/unlike/:id", getToken, async (req, res) => {
 
     post.likedBy.filter((likeid) => likeid != userID);
     await post.save();
-    res.json({ message: "post unliked sucessfully" });
+    res.status(200).json({ message: "post unliked sucessfully" });
   } catch (err) {
-    res.status(401).json({ message: "Couldnt perform the unfollow" });
+    res.status(401).json({ message: "Couldnt perform the unlike" });
   }
 });
 
@@ -236,7 +236,7 @@ router.post("/comment/:id", getToken, async (req, res) => {
 
     res.json({ commentId: newcomment._id });
   } catch (err) {
-    res.status(401).json({ message: "Couldnt perform the unfollow" });
+    res.status(401).json({ message: "Couldnt perform the comment" });
   }
 });
 
@@ -261,7 +261,7 @@ router.get("/posts/:id", getToken, async (req, res) => {
         numberOfComments: allcomments.length,
     });
   } catch (err) {
-    res.status(401).json({ message: "Couldnt perform the unfollow" });
+    res.status(401).json({ message: "Couldnt get the post" });
   }
 });
 
@@ -284,7 +284,7 @@ router.get("/all_posts", getToken, async (req, res) => {
 
     return res.json({ result });
   } catch (err) {
-    res.status(401).json({ message: "Couldnt perform the unfollow" });
+    res.status(401).json({ message: "Couldnt get all the posts" });
   }
 });
 
