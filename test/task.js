@@ -36,8 +36,8 @@ describe("Tests API", () => {
       .set("Content-Type", "application/json")
       .set("Accept", "application/json");
 
-    // console.log(res);
-    token = res.body.token;
+      token = res.body.token;
+      console.log(token);
     res.should.have.status(200);
     res.body.should.have.property("token");
     // .get('/')
@@ -165,10 +165,9 @@ describe("Tests API", () => {
       .request("https://social-media-api-5f39.onrender.com")
     .post("/api/comment/" + postID)
     .send(defaultComment)
-    .set({Authorization:`${token}`})
-    
     .set("Content-Type", "application/json")
-      .set("Accept", "application/json")
+    .set("Accept", "application/json")
+    .set({Authorization:`${token}`})
  
         res.should.have.status(200);
         res.should.be.a("object");
@@ -181,10 +180,10 @@ describe("Tests API", () => {
       .request("https://social-media-api-5f39.onrender.com")
     .get("/api/posts" + postID)
     // .send(defaultPost)
-    .set({Authorization:`${token}`})
     .set("Content-Type", "application/json")
-      .set("Accept", "application/json")
-        res.should.have.status(200);
+    .set("Accept", "application/json")
+    .set({Authorization:`${token}`})
+    res.should.have.status(200);
         res.should.be.a("object");
 
         res.body.should.have.property("title");
@@ -201,9 +200,9 @@ describe("Tests API", () => {
       .request("https://social-media-api-5f39.onrender.com")
     .get("/api/all_posts")
     // .send(defaultPost)
-    .set({Authorization:`${token}`})
     .set("Content-Type", "application/json")
-      .set("Accept", "application/json")
+    .set("Accept", "application/json")
+    .set({Authorization:`${token}`})
 
         res.should.have.status(200);
         res.should.be.a("array");

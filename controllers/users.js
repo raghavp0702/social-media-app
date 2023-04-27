@@ -57,7 +57,7 @@ router.post("/follow/:id", getToken, async (req, res) => {
     if (user.following.includes(id)) {
       // does 1 follow 2
       return res
-        .status(400)
+        .status(200)
         .json({ message: "Current user is already following them" });
     }
     user.following.push(id);
@@ -181,7 +181,7 @@ router.post("/like/:id", getToken, async (req, res) => {
       return res.status(404).json({ message: "This post does not exist" });
     }
     if (post.likedBy.includes(userID)) {
-      return res.status(400).json({ message: "Post is already liked" });
+      return res.status(200).json({ message: "Post is already liked" });
     }
 
     post.likedBy.push(userID);
